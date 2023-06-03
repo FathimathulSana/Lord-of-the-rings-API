@@ -6,7 +6,8 @@ const initialState = {
     perPage: 10,
     currentPage: 1,
     totalPages: 0,
-    characters: []
+    characters: [],
+    characterDetails: []
 }
 const Reducers = (state = initialState, action) => {
     switch (action.type) {
@@ -26,6 +27,8 @@ const Reducers = (state = initialState, action) => {
             return { ...state, totalPages: action.payload };
         case 'SET_CHARACTERS':
             return { ...state, characters: action.payload };
+        case 'SET_CHARACTER_DETAILS':
+            return { ...state, characterDetails: action.payload }
         default:
             return state;
     }

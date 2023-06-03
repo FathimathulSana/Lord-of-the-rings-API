@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const KEY = '_R_vmyXDpG1bUZRmjaFI';
+const apiKey = process.env.REACT_APP_MY_KEY;
 
 export const setSearch = (search) => ({
     type: 'SET_SEARCH_TERM',
@@ -39,6 +39,10 @@ export const setCharacters = (characters) => ({
     type: 'SET_CHARACTERS',
     payload: characters
 })
+export const setCharacterDetails = (details) => ({
+    type: 'SET_CHARACTER_DETAILS',
+    payload: details
+})
 
 export const fetchCharacters = () => {
     return async (dispatch, getState) => {
@@ -54,13 +58,29 @@ export const fetchCharacters = () => {
         try {
             const response = await axios.get('https://the-one-api.dev/v2/character', {
                 headers: {
-                    Authorization: `Bearer ${KEY}`,
+                    Authorization: `Bearer ${apiKey}`,
                     Accept: 'application/json',
                 },
                 params: params
             });
             dispatch(setCharacters(response.data.docs));
             dispatch(setTotalPages(response.data.totalPages));
+        } catch (error) {
+            console.error('Error fetching characters:', error);
+        }
+    }
+}
+export const fetchCharacterDetails = (id) => {
+    return async (dispatch) => {
+        try {
+            const response = await axios.get(`https://the-one-api.dev/v2/character/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${apiKey}`,
+                    Accept: 'application/json',
+                }
+            });
+            const characterDetails = response.data.docs;
+            dispatch(setCharacterDetails(characterDetails));
         } catch (error) {
             console.error('Error fetching characters:', error);
         }
