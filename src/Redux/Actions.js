@@ -6,6 +6,12 @@ export const setSearch = (searchTerm) => ({
     type: 'SET_SEARCH_TERM',
     payload: searchTerm
 });
+export const setSearchResults = (results) => {
+    return {
+        type: 'SET_SEARCH_RESULTS',
+        payload: results
+    }
+}
 
 export const setSelectedRaces = (selectedRaces) => ({
     type: 'SET_SELECTED_RACES',
@@ -50,7 +56,7 @@ export const fetchCharacters = () => {
         const params = {
             limit: state.perPage,
             page: state.currentPage,
-            sort: state.sortOrder === 'asc' ? 'name' : '-name',
+            sort: state.sortOrder === 'asc' ? '-name' : 'name',
             race: state.selectedRaces.join(','),
             gender: state.selectedGender,
             name: state.search

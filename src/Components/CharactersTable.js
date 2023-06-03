@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
-import { Container, Form, Pagination, Table } from "react-bootstrap";
+import { Button, Container, Form, Pagination, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCharacters, setCurrentPage, setPerPage, setSearch, setSelectedGender, setSelectedRaces, setSortOrder } from '../Redux/Actions';
+import { fetchCharacters, setCurrentPage, setPerPage, setSearch, setSearchResults, setSelectedGender, setSelectedRaces, setSortOrder } from '../Redux/Actions';
 
 const CharactersTable = () => {
     const dispatch = useDispatch();
     const characters = useSelector((state) => state.characters)
     const search = useSelector((state) => state.search);
+    const searchResults = useSelector((state) => state.searchResults)
     const selectedRaces = useSelector((state) => state.selectedRaces)
     const selectedGender = useSelector((state) => state.selectedGender)
     const sortOrder = useSelector((state) => state.sortOrder)
@@ -39,7 +40,12 @@ const CharactersTable = () => {
     const handlePageChange = (page) => {
         dispatch(setCurrentPage(page));
     }
-    let rowIndex = 0;
+
+    const handleSearchClick = () => {
+        const searchResults = characters.filter((item) =>
+            item.name.toLowerCase().includes(search.toLowerCase()));
+        dispatch(setSearchResults(searchResults));
+    }
     const renderPageNumbers = () => {
         const pageItems = [];
         for (let i = 1; i <= totalPages; i++) {
@@ -56,6 +62,9 @@ const CharactersTable = () => {
         }
         return pageItems;
     }
+
+    let rowIndex = 0;
+
     return (
         <div>
             < Container className="mb-5" >
@@ -64,11 +73,14 @@ const CharactersTable = () => {
                 <Form>
                     <Form.Group controlId="search">
                         <Form.Label>Search by name:</Form.Label>
-                        <Form.Control type='text' value={search} onChange={handleSearch} />
+                        <div className="d-flex">
+                            <Form.Control type='text' value={search} onChange={handleSearch} />
+                            <Button variant="secondary" onClick={handleSearchClick}>Search</Button>
+                        </div>
                     </Form.Group>
                     <Form.Group controlId="raceFilter">
                         <Form.Label>Filter by race:</Form.Label>
-                        <Form.Control as='select' multiple value={selectedRaces} onChange={handleRaceChange}>
+                        <Form.Control as='select' value={selectedRaces} onChange={handleRaceChange}>
                             <option value="Human">Human</option>
                             <option value="Elf">Elf</option>
                             <option value="Dwarf">Dwarf</option>
@@ -108,7 +120,7 @@ const CharactersTable = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {characters.map((character) => (
+                        {(searchResults.length > 0 ? searchResults : characters).map((character) => (
                             < tr key={character._id} >
                                 <td>{++rowIndex}</td>
                                 <td>{character.name}</td>

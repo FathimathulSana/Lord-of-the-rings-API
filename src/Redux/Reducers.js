@@ -1,5 +1,6 @@
 const initialState = {
     search: '',
+    searchResults: [],
     selectedRaces: [],
     selectedGender: '',
     sortOrder: 'asc',
@@ -13,6 +14,8 @@ const Reducers = (state = initialState, action) => {
     switch (action.type) {
         case 'SET_SEARCH_TERM':
             return { ...state, search: action.payload };
+        case 'SET_SEARCH_RESULTS':
+            return { ...state, searchResults: action.payload };
         case 'SET_SELECTED_RACES':
             return { ...state, selectedRaces: action.payload };
         case 'SET_SELECTED_GENDER':
