@@ -2,9 +2,9 @@ import axios from "axios";
 
 const apiKey = process.env.REACT_APP_MY_KEY;
 
-export const setSearch = (search) => ({
+export const setSearch = (searchTerm) => ({
     type: 'SET_SEARCH_TERM',
-    payload: search
+    payload: searchTerm
 });
 
 export const setSelectedRaces = (selectedRaces) => ({
@@ -27,9 +27,9 @@ export const setPerPage = (perPage) => ({
     payload: perPage
 })
 
-export const setCurrentPage = (currentPage) => ({
+export const setCurrentPage = (page) => ({
     type: 'SET_CURRENT_PAGE',
-    payload: currentPage
+    payload: page
 })
 export const setTotalPages = (totalPages) => ({
     type: 'SET_TOTAL_PAGES',

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Container, Form, Table } from "react-bootstrap";
+import { Container, Form, Pagination, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCharacters, setCurrentPage, setPerPage, setSearch, setSelectedGender, setSelectedRaces, setSortOrder } from '../Redux/Actions';
 
@@ -19,7 +19,8 @@ const CharactersTable = () => {
     }, [dispatch, search, selectedRaces, selectedGender, sortOrder, perPage, currentPage]);
 
     const handleSearch = (event) => {
-        dispatch(setSearch(event.target.value));
+        const searchTerm = event.target.value;
+        dispatch(setSearch(searchTerm));
     }
     const handleRaceChange = (event) => {
         const selectedOptions = Array.from(event.target.selectedOptions, (option) => option.value);
@@ -35,10 +36,26 @@ const CharactersTable = () => {
         dispatch(setPerPage(Number(event.target.value)));
         dispatch(setCurrentPage(1));
     }
-    const handlePageChange = (event) => {
-        dispatch(setCurrentPage(Number(event.target.value)));
+    const handlePageChange = (page) => {
+        dispatch(setCurrentPage(page));
     }
     let rowIndex = 0;
+    const renderPageNumbers = () => {
+        const pageItems = [];
+        for (let i = 1; i <= totalPages; i++) {
+            pageItems.push(
+                <Pagination.Item
+                    key={i}
+                    active={i === currentPage}
+                    onClick={() => handlePageChange(i)}
+                >
+                    {i}
+                </Pagination.Item>
+
+            );
+        }
+        return pageItems;
+    }
     return (
         <div>
             < Container className="mb-5" >
@@ -104,19 +121,23 @@ const CharactersTable = () => {
                         ))}
                     </tbody>
                 </Table>
-                <Form.Group controlId="perPage">
-                    <Form.Label>Limit:</Form.Label>
-                    <Form.Control style={{ width: '4%' }} as='select' value={perPage} onChange={handlePerPageChange}>
-                        <option value="10">10</option>
-                        <option value="20">20</option>
-                        <option value="30">50</option>
-                    </Form.Control>
-                </Form.Group>
-                <Form.Group controlId="currentPage">
-                    <Form.Label>Current Page:</Form.Label>
-                    <Form.Control type='number' min='1' max={totalPages} value={currentPage} onChange={handlePageChange}>
-                    </Form.Control>
-                </Form.Group>
+                <div className="d-flex justify-content-between">
+                    <div> <Pagination >
+                        <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} />
+                        <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} />
+                    </Pagination>
+                    </div>
+                    <div >
+                        <Form.Group className="d-flex align-items-center justify-content-center" controlId="perPage">
+                            <Form.Label className="mt-2 me-2">Limit:</Form.Label>
+                            <Form.Control as='select' value={perPage} onChange={handlePerPageChange}>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="30">50</option>
+                            </Form.Control>
+                        </Form.Group>
+                    </div>
+                </div >
             </Container >
         </div >
     );
