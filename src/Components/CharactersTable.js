@@ -72,14 +72,14 @@ const CharactersTable = () => {
                 <h4 className="text-center mt-3"> The one API to rule them all</h4>
                 <Form>
                     <Form.Group controlId="search">
-                        <Form.Label>Search by name:</Form.Label>
+                        <Form.Label>Search :</Form.Label>
                         <div className="d-flex">
-                            <Form.Control type='text' value={search} onChange={handleSearch} />
+                            <Form.Control type='text' placeholder="by name" value={search} onChange={handleSearch} />
                             <Button variant="secondary" onClick={handleSearchClick}>Search</Button>
                         </div>
                     </Form.Group>
                     <Form.Group controlId="raceFilter">
-                        <Form.Label>Filter by race:</Form.Label>
+                        <Form.Label>Race :</Form.Label>
                         <Form.Control as='select' value={selectedRaces} onChange={handleRaceChange}>
                             <option value="Human">Human</option>
                             <option value="Elf">Elf</option>
@@ -94,7 +94,7 @@ const CharactersTable = () => {
                         </Form.Control>
                     </Form.Group>
                     <Form.Group controlId="genderFilter">
-                        <Form.Label>Filter by gender:</Form.Label>
+                        <Form.Label>Gender :</Form.Label>
                         <Form.Control as='select' value={selectedGender} onChange={handleGenderChange} >
                             <option value="">Any</option>
                             <option value="Male">Male</option>
@@ -109,7 +109,7 @@ const CharactersTable = () => {
                         </Form.Control>
                     </Form.Group>
                 </Form>
-                <Table striped bordered hover>
+                <Table className="mt-2" hover>
                     <thead>
                         <tr>
                             <th>ID</th>
